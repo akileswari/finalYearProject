@@ -1,0 +1,30 @@
+
+h2{
+    color:blue;
+}
+.header {
+    background-color: lavender;
+}
+
+.text-success{
+color :#18e318 !important;
+}
+.text-danger{
+color :#F50D0E !important;
+}
+.inc{
+color :#18e318;
+}
+.dec{
+color :#F50D0E;
+}
+.box{
+width: 147px;height: 74px;font-size: 13px;
+}
+strong {
+    font-weight: 800 !important;
+    font-size: 28px !important;
+}
+h3{
+color:#d30bd6
+}

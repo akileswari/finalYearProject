@@ -1,0 +1,653 @@
+{%extends "base.html"%}
+{% block contents %}
+    <div class="container">
+        <button id="export" onclick="exportdocx()" >export</button>
+      <div class="header">
+
+          <h2>Dashboard</h2>
+          <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+                <li><a data-toggle="tab" href="#al">Aluminium</a> </li>
+                <li><a data-toggle="tab" href="#cu">Copper</a></li>
+                <li><a data-toggle="tab" href="#ir">Iron</a></li>
+                <li><a data-toggle="tab" href="#ni">Nickel</a></li>
+          </ul>
+      </div>
+      <div class="tab-content">
+          <div id="home" class="tab-pane fade in active">
+            <h3>HOME</h3>
+            <table class="table table-striped" style="width:50%">
+              <tr class="table table-warning">
+                 <th>METALS</th>
+                 <th>PRICE</th>
+                 <th>UNITS</th>
+                 <th>Day</th>
+                 <th>DATE</th>
+              </tr>
+              <tr>
+                 <td>Aluminium</td>
+                 <td>{{al}}</td>
+                 <td> INR/Kg</td>
+                 {%if a_d<0 %}
+                    <td class="dec">{{a_d}}%<span class="glyphicon glyphicon-triangle-bottom text-danger"></span></td>
+                 {%else%}
+                     <td class="inc">{{a_d}}%<span class="glyphicon glyphicon-triangle-top text-success"></span></td>
+                 {%endif%}
+                 <td>{{d_a}}</td>
+              </tr>
+              <tr>
+                <td>Copper</td>
+                <td>{{cu}}</td>
+                <td> INR/Kg</td>
+                {%if c_d<0 %}
+                    <td class="dec">{{c_d}}%<span class="glyphicon glyphicon-triangle-bottom text-danger"></span></td>
+                {%else%}
+                    <td class="inc">{{c_d}}%<span class="glyphicon glyphicon-triangle-top text-success"></span></td>
+                {%endif%}
+                <td>{{d_c}}</td>
+
+              </tr>
+              <tr>
+                <td>Iron</td>
+                <td>{{ir}}</td>
+                <td> INR/Kg</td>
+                {%if i_d<0 %}
+                   <td class="dec">{{i_d}}%<span class="glyphicon glyphicon-triangle-bottom text-danger"></span></td>
+                {%else%}
+                   <td class="inc">{{i_d}}%<span class="glyphicon glyphicon-triangle-top text-success"></span></td>
+                {%endif%}
+                <td>{{d_i}}</td>
+
+              </tr>
+              <tr>
+                <td>Nickel</td>
+                <td>{{ni}}</td>
+                <td> INR/Kg</td>
+                {%if ni_d<0 %}
+                  <td class="dec">{{ni_d}}%<span class="glyphicon glyphicon-triangle-bottom text-danger"></span></td>
+                {%else%}
+                  <td class="inc">{{ni_d}}%<span class="glyphicon glyphicon-triangle-top text-success"></span></td>
+                {%endif%}
+                <td>{{d_n}}</td>
+
+              </tr>
+            </table>
+            <div id='myChart' ></div>
+            <script>
+            zingchart.THEME="classic";
+                            var myConfig = {
+                                "background-color":"#e6e6fa",
+                                "type":"line",
+                                "title":{
+                                    "text":"Stock chart with Metals",
+                                    "color":"#333",
+                                    "background-color":"#b4b4d2",
+                                    "width":"100%",
+                                    "text-align":"left",
+                                },
+                                "legend":{
+                                    "layout":"1",
+                                    "margin-top":"8%",
+                                    "margin-left":"5%",
+
+                                    "border-width":"0",
+                                    "shadow":false,
+                                    "marker":{
+                                        "cursor":"hand",
+                                        "border-width":"0"
+                                    },
+                                    "background-color":"white",
+                                    "item":{
+                                        "cursor":"hand"
+                                    },
+                                    "toggle-action":"remove"
+                                },
+                                "scaleX":{
+                                    "values":{{d_a_lis | safe}}
+
+                                },
+                                "scaleY":{
+                                    "progression": "log",
+                                    "log-base": 10,
+                                    "line-color":"#333"
+                                },
+                                "tooltip":{
+                                    "text":"%t: %v outbreaks in %k"
+                                },
+                                "plot":{
+                                    "line-width":3,
+                                    "marker":{
+                                        "size":2
+                                    },
+                                    "selection-mode":"multiple",
+                                    "background-mode":"graph",
+                                    "selected-state":{
+                                        "line-width":4
+                                    },
+                                    "background-state":{
+                                        "line-color":"#eee",
+                                        "marker":{
+                                            "background-color":"none"
+                                        }
+                                    }
+                                },
+                                "plotarea":{
+                                    "margin":"15% 25% 10% 7%"
+                                },
+
+                                "series": [
+                                    {
+                                        "values":{{val_a | safe}},
+                                        "text":"Aluminium",
+                                        "line-color":"#F31110",
+                                        "marker":{
+                                            "background-color":"#a6cee3",
+                                            "border-color":"#a6cee3"
+                                        }
+                                    },
+                                    {
+                                        "values":{{val_c | safe}},
+                                        "text":"Copper",
+                                        "line-color":"#1f78b4",
+                                        "marker":{
+                                            "background-color":"#1f78b4",
+                                            "border-color":"#1f78b4"
+                                        }
+                                    },
+                                    {
+                                        "values":{{val_i | safe}},
+                                        "text":"Iron",
+                                        "line-color":"#d30bd6",
+                                        "marker":{
+                                            "background-color":"#b2df8a",
+                                            "border-color":"#b2df8a"
+                                        }
+                                    },
+                                    {
+                                        "values":{{val_n | safe}},
+                                        "text":"Nickel",
+                                        "line-color":"#33a02c",
+                                        "marker":{
+                                            "background-color":"#33a02c",
+                                            "border-color":"#33a02c"
+                                        }
+                                    }
+
+                               ]
+                            };
+
+                    zingchart.render({
+                        id : 'myChart',
+                        data : myConfig,
+                        height: "500px",
+                        width: "100%",
+                        output : 'canvas'
+                    });
+
+            </script>
+
+          </div>
+          <div id="al" class="tab-pane fade">
+              <div style="width:100%;height:300px ">
+                  <div style="width:20%;float:left;">
+                      <img src="{{ url_for('static', filename='alum.jpg') }}" height="50%" width="200px">
+                  </div>
+                  <div style="width:15%;float:left;">
+                      <h3>ALUMINIUM</h3>
+                      <div class="box">as per {{d_a}} </div>
+                      <div class="box"><strong>{{al}}<br></strong> In INR/kg</div>
+                      <div class="box"><strong>{{((al/inr)*1000) | round(2)}}<br></strong> In USD/ton</div>
+                  </div>
+                  <div style="width:50%;float:left;">
+                      <h3>News</h3>
+                      <ul>
+                          {% for list in al_f %}
+                            <li><a href="{{list[0]}}">{{list[1]}}</a></li>
+                          {% endfor %}
+                      </ul>
+                  </div>
+              </div>
+             <div id='myChart_a'></div>
+             <script>
+                       var myConfig =
+                            {
+                                "type": "line",
+                                "utc": true,
+                                "title": {
+                                    "text": "Stock Chart with Aluminium",
+                                    "font-size": "24px",
+                                    "background-color":"#b4b4d2",
+                                    "adjust-layout":true
+                                },
+                                "plotarea": {
+                                    "margin": "dynamic 45 60 dynamic",
+                                },
+
+                                "scale-x": {
+                                  "labels":{{d_a_lis | safe}},
+                                  "label": {
+                                        "text": "Date",
+                                    }
+
+
+                                },
+                                "scale-y": {
+                                    "values": "50:150:10",
+
+                                    "line-color": "#f6f7f8",
+                                    "shadow": 0,
+                                    "guide": {
+                                        "line-style": "dashed"
+                                    },
+                                    "label": {
+                                        "text": "₹ per ton",
+                                    },
+                                    "minor-ticks": 0,
+                                    "thousands-separator": ","
+                                },
+                                "crosshair-x": {
+                                    "line-color": "#efefef",
+                                    "plot-label": {
+                                        "border-radius": "5px",
+                                        "border-width": "1px",
+                                        "border-color": "#f6f7f8",
+                                        "padding": "10px",
+                                        "font-weight": "bold"
+                                    },
+                                    "scale-label": {
+                                        "font-color": "#000",
+                                        "background-color": "#f6f7f8",
+                                        "border-radius": "5px"
+                                    }
+                                },
+                                "tooltip": {
+                                    "visible": true
+                                },
+                                "plot": {
+                                    "highlight":true,
+                                    "tooltip-text": "on%kl:close=%v<br>",
+                                    "shadow": 0,
+                                    "line-width": "2px",
+                                    "marker": {
+                                        "type": "circle",
+                                        "size": 3
+                                    },
+                                    "highlight-state": {
+                                        "line-width":3
+                                    },
+                                    "animation":{
+                                      "effect":1,
+                                      "sequence":2,
+                                      "speed":100,
+                                    }
+                                },
+                                "series": [
+                                    {
+                                        "values":{{val_a | safe}},
+
+                                        "line-color": "#d30bd6"
+                                                       }
+
+
+                                ]
+                            };
+
+                    zingchart.render({
+                        id : 'myChart_a',
+                        data : myConfig,
+                        height: 400,
+                        width: "100%"
+                    });
+
+                    console.log(myConfig);
+             </script>
+          </div>
+
+
+
+          <div id="cu" class="tab-pane fade">
+             <div style="width:100%;height:300px ">
+                  <div style="width:20%;float:left;">
+                        <img src="{{ url_for('static', filename='copper.jpg') }}" height="50%" width="200px">
+                  </div>
+                  <div style="width:15%;float:left;">
+                      <h3>copper</h3>
+                      <div class="box">as per {{d_c}} </div>
+                      <div class="box"><strong>{{cu}}<br></strong> In INR/kg</div>
+                      <div class="box"><strong>{{((cu/inr)*1000) | round(2)}}<br></strong> In USD/ton</div>
+                  </div>
+                  <div style="width:50%;float:left;">
+                      <h3>News</h3>
+                      <ul>
+                          {% for list in cu_f %}
+                            <li><a href="{{list[0]}}">{{list[1]}}</a></li>
+                          {% endfor %}
+                      </ul>
+                  </div>
+              </div>
+             <div id='myChart_c'></div>
+              <script>
+                     var myConfig =
+                            {
+                                "type": "line",
+                                "utc": true,
+                                "title": {
+                                    "text": "Stock Chart with Copper",
+                                    "font-size": "24px",
+                                    "background-color":"#b4b4d2",
+                                    "adjust-layout":true
+                                },
+                                "plotarea": {
+                                    "margin": "dynamic 45 60 dynamic",
+                                },
+
+                                "scale-x": {
+                                  "labels":{{d_c_lis | safe}},
+                                  "label": {
+                                        "text": "Date",
+                                    }
+
+
+                                },
+                                "scale-y": {
+                                    "values": "400:500:10",
+
+                                    "line-color": "#f6f7f8",
+                                    "shadow": 0,
+                                    "guide": {
+                                        "line-style": "dashed"
+                                    },
+                                    "label": {
+                                        "text": "₹ per ton",
+                                    },
+                                    "minor-ticks": 0,
+                                    "thousands-separator": ","
+                                },
+                                "crosshair-x": {
+                                    "line-color": "#efefef",
+                                    "plot-label": {
+                                        "border-radius": "5px",
+                                        "border-width": "1px",
+                                        "border-color": "#f6f7f8",
+                                        "padding": "10px",
+                                        "font-weight": "bold"
+                                    },
+                                    "scale-label": {
+                                        "font-color": "#000",
+                                        "background-color": "#f6f7f8",
+                                        "border-radius": "5px"
+                                    }
+                                },
+                                "tooltip": {
+                                    "visible": true
+                                },
+                                "plot": {
+                                    "highlight":true,
+                                    "tooltip-text": "on%kl:close=%v<br>",
+                                    "shadow": 0,
+                                    "line-width": "2px",
+                                    "marker": {
+                                        "type": "circle",
+                                        "size": 3
+                                    },
+                                    "highlight-state": {
+                                        "line-width":3
+                                    },
+                                    "animation":{
+                                      "effect":1,
+                                      "sequence":2,
+                                      "speed":100,
+                                    }
+                                },
+                                "series": [
+                                    {
+                                        "values":{{val_c | safe}},
+
+                                        "line-color": "#d30bd6"
+                                                       }
+
+
+                                ]
+                            };
+                    zingchart.render({
+                        id : 'myChart_c',
+                        data : myConfig,
+                        height: 400,
+                        width: "100%"
+                    });
+              </script>
+          </div>
+
+
+
+
+          <div id="ir" class="tab-pane fade">
+            <div style="width:100%;height:300px ">
+                  <div style="width:20%;float:left;">
+                    <img src="{{ url_for('static', filename='iron.jpg') }}" height="50%" width="200px">
+                  </div>
+                  <div style="width:15%;float:left;">
+                    <h3>Iron</h3>
+                    <div class="box">as per {{d_i}} </div>
+                    <div class="box"><strong>{{ir | round(2)}}<br></strong> In INR/kg</div>
+                    <div class="box"><strong>{{((ir/inr)*1000) | round(2)}}<br></strong> In USD/ton</div>
+                  </div>
+                  <div style="width:50%;float:left;">
+                      <h3>News</h3>
+                      <ul>
+                          {% for list in ir_f %}
+                            <li><a href="{{list[0]}}">{{list[1]}}</a></li>
+                          {% endfor %}
+                      </ul>
+                  </div>
+              </div>
+            <div id='myChart_i'></div>
+            <script>
+                    var myConfig =
+                            {
+                                "type": "line",
+                                "utc": true,
+                                "title": {
+                                    "text": "Stock Chart with Iron",
+                                    "font-size": "24px",
+                                    "background-color":"#b4b4d2",
+                                    "adjust-layout":true
+                                },
+                                "plotarea": {
+                                    "margin": "dynamic 45 60 dynamic",
+                                },
+
+                                "scale-x": {
+                                  "labels":{{d_i_lis | safe}}
+
+
+
+                                },
+                                "scale-y": {
+                                    "values": "0:100:10",
+
+                                    "line-color": "#f6f7f8",
+                                    "shadow": 0,
+                                    "guide": {
+                                        "line-style": "dashed"
+                                    },
+                                    "label": {
+                                        "text": "$ per ton",
+                                    },
+                                    "minor-ticks": 0,
+                                    "thousands-separator": ","
+                                },
+                                "crosshair-x": {
+                                    "line-color": "#efefef",
+                                    "plot-label": {
+                                        "border-radius": "5px",
+                                        "border-width": "1px",
+                                        "border-color": "#f6f7f8",
+                                        "padding": "10px",
+                                        "font-weight": "bold"
+                                    },
+                                    "scale-label": {
+                                        "font-color": "#000",
+                                        "background-color": "#f6f7f8",
+                                        "border-radius": "5px"
+                                    }
+                                },
+                                "tooltip": {
+                                    "visible": true
+                                },
+                                "plot": {
+                                    "highlight":true,
+                                    "tooltip-text": "on%kl:close=%v<br>",
+                                    "shadow": 0,
+                                    "line-width": "2px",
+                                    "marker": {
+                                        "type": "circle",
+                                        "size": 3
+                                    },
+                                    "highlight-state": {
+                                        "line-width":3
+                                    },
+                                    "animation":{
+                                      "effect":1,
+                                      "sequence":2,
+                                      "speed":100,
+                                    }
+                                },
+                                "series": [
+                                    {
+                                        "values":{{val_i | safe}},
+
+                                        "line-color": "#d30bd6"
+                                                       }
+
+
+                                ]
+                            };
+                        zingchart.render({
+                            id : 'myChart_i',
+                            data : myConfig,
+                            height: 500,
+                            width: 725
+                        });
+            </script>
+          </div>
+
+
+
+          <div id="ni" class="tab-pane fade">
+              <div style="width:100%;height:300px ">
+                  <div style="width:20%;float:left;">
+                      <img src="{{ url_for('static', filename='nickel.jpg') }}" height="50%" width="200px">
+                  </div>
+                  <div style="width:15%;float:left;">
+                      <h3>Nickel</h3>
+                      <div class="box">as per {{d_n}} </div>
+                      <div class="box"><strong>{{ni}}<br></strong> In INR/kg</div>
+                      <div class="box"><strong>{{((ni/inr)*1000) | round(2)}}<br></strong> In USD/ton</div>
+                  </div>
+                  <div style="width:50%;float:left;">
+                      <h3>News</h3>
+                      <ul>
+                          {% for list in ni_f %}
+                            <li><a href="{{list[0]}}">{{list[1]}}</a></li>
+                          {% endfor %}
+                      </ul>
+                  </div>
+              </div>
+              <div id='myChart_n'></div>
+              <script>
+                            var myConfig =
+                            {
+                                "type": "line",
+                                "utc": true,
+                                "title": {
+                                    "text": "Stock Chart with Nickel",
+                                    "font-size": "24px",
+                                    "background-color":"#b4b4d2",
+                                    "adjust-layout":true
+                                },
+                                "plotarea": {
+                                    "margin": "dynamic 45 60 dynamic",
+                                },
+
+                                "scale-x": {
+                                  "labels":{{d_n_lis | safe}},
+                                  "label": {
+                                        "text": "Date",
+                                    }
+
+
+                                },
+                                "scale-y": {
+                                    "values": "10000:12000:100",
+
+                                    "line-color": "#f6f7f8",
+                                    "shadow": 0,
+                                    "guide": {
+                                        "line-style": "dashed"
+                                    },
+                                    "label": {
+                                        "text": "$ per ton",
+                                    },
+                                    "minor-ticks": 0,
+                                    "thousands-separator": ","
+                                },
+                                "crosshair-x": {
+                                    "line-color": "#efefef",
+                                    "plot-label": {
+                                        "border-radius": "5px",
+                                        "border-width": "1px",
+                                        "border-color": "#f6f7f8",
+                                        "padding": "10px",
+                                        "font-weight": "bold"
+                                    },
+                                    "scale-label": {
+                                        "font-color": "#000",
+                                        "background-color": "#f6f7f8",
+                                        "border-radius": "5px"
+                                    }
+                                },
+                                "tooltip": {
+                                    "visible": true
+                                },
+                                "plot": {
+                                    "highlight":true,
+                                    "tooltip-text": "on%kl:close=%v<br>",
+                                    "shadow": 0,
+                                    "line-width": "2px",
+                                    "marker": {
+                                        "type": "circle",
+                                        "size": 3
+                                    },
+                                    "highlight-state": {
+                                        "line-width":3
+                                    },
+                                    "animation":{
+                                      "effect":1,
+                                      "sequence":2,
+                                      "speed":100,
+                                    }
+                                },
+                                "series": [
+                                    {
+                                        "values":{{val_n | safe}},
+
+                                        "line-color": "#d30bd6"
+                                                       }
+
+
+                                ]
+                            };
+                            zingchart.render({
+                                id : 'myChart_n',
+                                data : myConfig,
+                                height: 400,
+                                width: "100%"
+                            });
+              </script>
+          </div>
+      </div>
+    </div>
+    <br>
+    <br>
+{% endblock %}
