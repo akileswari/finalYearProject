@@ -5,6 +5,7 @@ import new as rate
 import newsfeed as feed
 import curr as cd
 from docx import Document
+from docx.shared import Inches
 
 app = Flask(__name__)
 app.secret_key="123"
@@ -29,10 +30,8 @@ def downloadFile ():
     #For windows you need to use drive name [ex: F:/Example.pdf]
     document=Document()
     document.add_paragraph('A plain paragraph having some ')
-    document.replace_media('C:\\Users\\Arun ganesh\\Desktop\\akila\\sign up.jpg',
-                           'C:\\Users\\Arun ganesh\\Desktop\\akila\\login.jpg')
+    document.add_picture('F:\\Downloads\\a.png',width=Inches(2.0),height=Inches(2.0))
     document.save("demo.docx")
-    path = "demo.docx"
     return send_file("F:\\PycharmProjects\\finalproject\\demo.docx",mimetype='application/*',as_attachment=True,attachment_filename="chart.docx")
 
 if __name__ == '__main__':
