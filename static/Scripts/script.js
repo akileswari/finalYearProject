@@ -46,7 +46,7 @@ document.body.appendChild(img);
 ////var url = DOMURL.createObjectURL(sImageData);
 //img.src=sImageData;
 ////        // $.get("http://localhost:4545/download")
-//////        window.open("/download");
+       window.open("/download");
 //
 }
 function b64toBlob(b64Data, contentType, sliceSize) {
