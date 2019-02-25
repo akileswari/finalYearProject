@@ -11,7 +11,7 @@ var ctx = can.getContext('2d');
 ctx.fillRect(50,50,50,50);
 ////
 var img = new Image();
-img.src = sImageData.toDataURL();
+img.src = sImageData;
 document.body.appendChild(img);
 //var canvas = document.createElement('canvas');
 //var ctx = canvas.getContext('2d');
