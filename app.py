@@ -34,7 +34,7 @@ def downloadFile ():
     # document.save("demo.docx")
     docConv.template()
     docConv.covx_to_pdf()
-    return send_file("F:\\PycharmProjects\\finalproject\\out1.pdf",mimetype='application/*',as_attachment=True,attachment_filename="out1.pdf")
+    return send_file("F:\\PycharmProjects\\finalproject\\out1.pdf",mimetype='application/*',as_attachment=True,attachment_filename="output.pdf")
 
 if __name__ == '__main__':
     app.run(port=4545, debug=True)

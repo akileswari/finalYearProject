@@ -5,7 +5,7 @@ from docx.shared import Inches
 import win32com.client as client
 
 def template():
-    document = Document('F:\\PycharmProjects\\finalproject\\PDF Reporting\\test.docx')
+    document = Document('F:\\PycharmProjects\\finalproject\\test.docx')
     print(document.paragraphs)
     width = 200
     height = 200
