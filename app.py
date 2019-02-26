@@ -6,7 +6,7 @@ import newsfeed as feed
 import curr as cd
 import export as docConv
 import Word2PDF as pdf
-
+import win32com.client as client
 app = Flask(__name__)
 app.secret_key="123"
 
@@ -33,9 +33,11 @@ def downloadFile ():
     # document.add_picture("F:\\PycharmProjects\\finalproject\\PDF Reporting\\image.jpg",width=Inches(2.0),height=Inches(2.0))
     # document.save("demo.docx")
     docConv.template()
-    docConv.covx_to_pdf()
+    
     return send_file("F:\\PycharmProjects\\finalproject\\out1.pdf",mimetype='application/*',as_attachment=True,attachment_filename="output.pdf")
 
 if __name__ == '__main__':
     app.run(port=4545, debug=True)
+
+
 

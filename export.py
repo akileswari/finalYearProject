@@ -10,7 +10,7 @@ def template():
     width = 200
     height = 200
     target = "<placeholder"
-    image_file = "F:\\Downloads\\a.jpg"
+    image_file = "F:\\Downloads\\a.png"
     for table in document.tables:
         for row in table.rows:
             for cell in row.cells:
