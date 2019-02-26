@@ -4,8 +4,8 @@ from flask import Flask, render_template, request, session, make_response, json,
 import new as rate
 import newsfeed as feed
 import curr as cd
-from docx import Document
-from docx.shared import Inches
+import export as docConv
+import Word2PDF as pdf
 
 app = Flask(__name__)
 app.secret_key="123"
@@ -28,11 +28,14 @@ def dashboard():
 @app.route('/download')
 def downloadFile ():
     #For windows you need to use drive name [ex: F:/Example.pdf]
-    document=Document()
-    document.add_paragraph('A plain paragraph having some ')
-    document.add_picture('F:\\Downloads\\a.png',width=Inches(2.0),height=Inches(2.0))
-    document.save("demo.docx")
-    return send_file("F:\\PycharmProjects\\finalproject\\demo.docx",mimetype='application/*',as_attachment=True,attachment_filename="chart.docx")
+    # document=Document("test.docx")
+    # #document.add_paragraph('A plain paragraph having some ')
+    # document.add_picture("F:\\PycharmProjects\\finalproject\\PDF Reporting\\image.jpg",width=Inches(2.0),height=Inches(2.0))
+    # document.save("demo.docx")
+    docConv.template()
+    docConv.covx_to_pdf()
+    return send_file("F:\\PycharmProjects\\finalproject\\out1.pdf",mimetype='application/*',as_attachment=True,attachment_filename="out1.pdf")
 
 if __name__ == '__main__':
     app.run(port=4545, debug=True)
+
