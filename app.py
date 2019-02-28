@@ -1,10 +1,10 @@
 import requests
 import pandas as pd
 from flask import Flask, render_template, request, session, make_response, json, send_file
-import new as rate
-import newsfeed as feed
-import curr as cd
-import export as docConv
+import FetchData as rate
+import NewsFeed as feed
+import DollarToINR as cd
+import PDFCreation as docConv
 import Word2PDF as pdf
 import win32com.client as client
 app = Flask(__name__)

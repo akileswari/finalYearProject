@@ -2,7 +2,7 @@ import os
 import sys
 from docx import Document
 from docx.shared import Inches
-import win32com.client as client
+
 
 def template():
     document = Document('F:\\PycharmProjects\\finalproject\\test.docx')
@@ -36,14 +36,4 @@ def template():
             para.add_run().add_picture(image_file, width=Inches(1), height=Inches(1))
             document.save('test1.docx')
 
-def covx_to_pdf():
-    """Convert a Word .docx to PDF"""
-    infile = "F:\\PycharmProjects\\finalproject\\test1.docx"
-    outfile = "F:\\PycharmProjects\\finalproject\\out1.pdf"
-    wdFormatPDF = 17
-    word = client.DispatchEx("Word.Application")
-    doc = word.Documents.Open(infile)
-    doc.SaveAs(outfile, FileFormat=wdFormatPDF)
-    doc.Close()
-    word.Quit()
 

@@ -1,7 +1,7 @@
 import quandl
 import pandas as pd
 quandl.ApiConfig.api_key = "y6HGamWceWTnsqypSb5p"
-import curr as cd
+import DollarToINR as cd
 
 def curr_rate():
     inr=cd.indian_rs()
