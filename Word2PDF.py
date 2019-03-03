@@ -15,7 +15,6 @@ def covx_to_pdf(filename):
     wdFormatPDF = 17
 
     pythoncom.CoInitialize()
-    #word = comtypes.client.CreateObject('Word.Application')
     word = client.Dispatch("Word.Application")
     doc = word.Documents.Open(infile)
     doc.SaveAs(outfile, FileFormat=wdFormatPDF)

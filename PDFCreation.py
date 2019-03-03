@@ -8,10 +8,7 @@ import Word2PDF as pdf
 def template(file):
     document = Document('F:\\PycharmProjects\\finalproject\\test.docx')
     print(document.paragraphs)
-    width = 200
-    height = 200
     target = "<placeholder"
-    #image_file = "F:\\Downloads\\a.png"
     for table in document.tables:
         for row in table.rows:
             for cell in row.cells:
@@ -20,8 +17,6 @@ def template(file):
                     mycell = cell.text
                     print(str(mycell))
                     arr = (str(mycell)).split('|')
-                    # print(arr)
-                    #	print(int(arr[2].split('>')[0]))
                     cell.text = ""
                     run = cell.paragraphs[0].add_run().add_picture(file, width=Inches(1), height=Inches(1))
                     print(arr[2])

@@ -41,7 +41,7 @@ function exportdocx() {
       window.open("/downloadpdf?fn="+selectedChart+".png","clearcache=yes");
     });
 
-    //$.get("http://localhost:4545/downdloadpdf");
+
     form=undefined;
 
 }
