@@ -1,20 +1,21 @@
 import requests
 import pandas as pd
-from flask import Flask, render_template, request, session, json, send_file, flash, redirect, url_for
+from flask import Flask, render_template, request, session, json, send_file, flash, redirect, url_for,Response
 import FetchData as rate
 import NewsFeed as feed
 import DollarToINR as cd
 import PDFCreation as docConv
-import Word2PDF as pdf
-import win32com.client as client
-app = Flask(__name__)
-app.secret_key="123"
-
+import os
+fname=""
 from docx import Document
 from docx.shared import Inches
+app = Flask(__name__)
+app.secret_key="123"
+app.config['CACHE_TYPE']="null"
 
 @app.route('/')
 def home():
+    print("home")
     return render_template('home.html')
 @app.route('/dashboard')
 def dashboard():
@@ -30,6 +31,7 @@ def dashboard():
 
 @app.route('/download',methods=['POST'])
 def downloadFile ():
+    print("hello2")
     print(request.method)
     print(request.files['file'])
     f=request.files['file']
@@ -41,18 +43,27 @@ def downloadFile ():
     # document.add_picture(f,width=Inches(2.0),height=Inches(2.0))
     # document.save("demo1.docx")
     docConv.template(f)
-    pdf.covx_to_pdf()
-    return send_file("F:\\PycharmProjects\\finalproject\\out1.pdf", mimetype='application/*', as_attachment=True,attachment_filename="output.pdf")
-
-
-
-
+    fname=f.filename
+    pdfDownload = open("F:\\PycharmProjects\\finalproject\\static\\"+fname+".pdf", 'rb').read()
+    return Response(
+        pdfDownload,mimetype="application/pdf",headers={"Content-disposition":"attachment; filename=output.pdf"})
+    #return redirect(url_for("downloadpdf?d=succ"))
+    #return send_file("F:\\PycharmProjects\\finalproject\\test1.docx", mimetype='application/*', as_attachment=True,attachment_filename="output.docx")
 
 @app.route('/downloadpdf')
-def downloadpdf ():
-    print("hello")
-    return send_file("F:\\PycharmProjects\\finalproject\\out1.pdf", mimetype='application/*', as_attachment=True,
-                     attachment_filename="output.pdf")
+def downloadpdf():
+    print(request.method)
+    fname=request.args['fn']
+    # response=send_file("F:\\PycharmProjects\\finalproject\\output.pdf", mimetype='application/*', as_attachment=True,attachment_filename="output.pdf")
+    # response.cache_control.max_age=60*2
+
+    #return response
+    return send_file("F:\\PycharmProjects\\finalproject\\static\\"+fname+".pdf", mimetype='application/*', as_attachment=True,attachment_filename="output.pdf")
+
+@app.route('/delete')
+def deletepdf ():
+    os.remove("F:\\PycharmProjects\\finalproject\\static\\output.pdf")
+    return "deleted"
 
 if __name__ == '__main__':
     app.run(port=4545, debug=True)

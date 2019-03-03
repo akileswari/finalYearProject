@@ -2,6 +2,7 @@ import os
 import sys
 from docx import Document
 from docx.shared import Inches
+import Word2PDF as pdf
 
 
 def template(file):
@@ -10,7 +11,7 @@ def template(file):
     width = 200
     height = 200
     target = "<placeholder"
-    image_file = "F:\\Downloads\\a.png"
+    #image_file = "F:\\Downloads\\a.png"
     for table in document.tables:
         for row in table.rows:
             for cell in row.cells:
@@ -35,5 +36,6 @@ def template(file):
             para.text = ""
             para.add_run().add_picture(file, width=Inches(1), height=Inches(1))
             document.save('test1.docx')
+    pdf.covx_to_pdf(file.filename)
 
 
