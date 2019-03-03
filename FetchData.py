@@ -27,33 +27,30 @@ def curr_rate():
         d_a_lis.append(t)
         value_a.append(round(alum['Close'][i]))
 
-
-    iron=pd.DataFrame(quandl.get("COM/FE_TJN",rows=15))
-    i_data=(inr*iron['Column 1'][14])/1000
-    dif_i=round(((iron['Column 1'][14]-iron['Column 1'][13])/iron['Column 1'][13])*100,4)
-    date_i = pd.Timestamp(iron.iloc[[14]].index.tolist()[0]).date()
-    value_i = []
-    d_i_lis = []
+    gold=pd.DataFrame(quandl.get("LBMA/GOLD",rows=15))
+    gold_data = round((inr * gold['USD (PM)'][14])/31.1035, 2)
+    dif_g = round(((gold['USD (PM)'][14] - gold['USD (PM)'][13]) / gold['USD (PM)'][13]) * 100, 4)
+    date_g = pd.Timestamp(gold.iloc[[14]].index.tolist()[0]).date()
+    value_g = []
+    d_g_lis = []
     for i in range(0, 15):
-        t = str(pd.Timestamp(iron.iloc[[i]].index.tolist()[0]).date())
-        d_i_lis.append(t)
-        value_i.append(round(iron['Column 1'][i]))
+        t = str(pd.Timestamp(gold.iloc[[i]].index.tolist()[0]).date())
+        d_g_lis.append(t)
+        value_g.append(round((inr * gold['USD (PM)'][i])/31.1035, 2))
 
-    ni=pd.DataFrame(quandl.get("COM/FE_TJN", rows=15))
-    ni_data=round((inr*ni['Column 1'][14])/1000,2)
-    dif_n=round(((ni['Column 1'][14]-ni['Column 1'][13])/ni['Column 1'][13])*100,4)
-    date_n = pd.Timestamp(copper.iloc[[14]].index.tolist()[0]).date()
-    value_n = []
-    d_n_lis = []
+
+    silver=pd.DataFrame(quandl.get("LBMA/SILVER",rows=15))
+    silver_data = round((inr * silver['USD'][14])/31.1035, 2)
+    dif_s = round(((silver['USD'][14] - silver['USD'][13]) / silver['USD'][13]) * 100, 4)
+    date_s = pd.Timestamp(silver.iloc[[14]].index.tolist()[0]).date()
+    value_s = []
+    d_s_lis = []
     for i in range(0, 15):
-        t = str(pd.Timestamp(ni.iloc[[i]].index.tolist()[0]).date())
-        d_n_lis.append(t)
-        value_n.append(round(ni['Column 1'][i]))
+        t = str(pd.Timestamp(silver.iloc[[i]].index.tolist()[0]).date())
+        d_s_lis.append(t)
+        value_s.append(round((inr * silver['USD'][i])/31.1035, 2))
 
-    return(a_data,dif_a,c_data,dif_c,i_data,dif_i,ni_data,dif_n,date_c,date_a,date_i,date_n,value_c,d_c_lis,value_a,d_a_lis,value_i,d_i_lis,value_n,d_n_lis)
-
-
-
+    return(a_data,dif_a,c_data,dif_c,silver_data,dif_s,gold_data,dif_g,date_c,date_a,date_s,date_g,value_c,d_c_lis,value_a,d_a_lis,value_s,d_s_lis,value_g,d_g_lis)
 
 
 

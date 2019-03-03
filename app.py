@@ -1,6 +1,6 @@
 import requests
 import pandas as pd
-from flask import Flask, render_template, request, session, make_response, json, send_file
+from flask import Flask, render_template, request, session, json, send_file, flash, redirect, url_for
 import FetchData as rate
 import NewsFeed as feed
 import DollarToINR as cd
@@ -9,6 +9,9 @@ import Word2PDF as pdf
 import win32com.client as client
 app = Flask(__name__)
 app.secret_key="123"
+
+from docx import Document
+from docx.shared import Inches
 
 @app.route('/')
 def home():
@@ -19,22 +22,37 @@ def dashboard():
     al_f=feed.news_feed("aluminium")
     cu_f = feed.news_feed("copper")
     ir_f = feed.news_feed("iron")
-    ni_f = feed.news_feed("nickel")
+    ni_f = feed.news_feed("gold")
     inr=cd.indian_rs()
     return render_template('dashb.html',al=al,cu=cu,ir=ir,ni=ni,a_d=a_d,c_d=c_d,i_d=i_d,ni_d=ni_d,al_f=al_f,cu_f=cu_f,ir_f=ir_f,ni_f=ni_f,d_c=d_c,
                            d_a=d_a,d_i=d_i,d_n=d_n,val_c=val_c,d_c_lis=d_c_lis,val_a=val_a,d_a_lis=d_a_lis,val_i=val_i,d_i_lis=d_i_lis,val_n=val_n,
                            d_n_lis=d_n_lis,inr=inr)
 
-@app.route('/download')
+@app.route('/download',methods=['POST'])
 def downloadFile ():
+    print(request.method)
+    print(request.files['file'])
+    f=request.files['file']
+    #f=request.args.get("file")
+    #print (f)
     #For windows you need to use drive name [ex: F:/Example.pdf]
-    # document=Document("test.docx")
-    # #document.add_paragraph('A plain paragraph having some ')
-    # document.add_picture("F:\\PycharmProjects\\finalproject\\PDF Reporting\\image.jpg",width=Inches(2.0),height=Inches(2.0))
-    # document.save("demo.docx")
-    docConv.template()
-    
-    return send_file("F:\\PycharmProjects\\finalproject\\out1.pdf",mimetype='application/*',as_attachment=True,attachment_filename="output.pdf")
+    # document=Document()
+    # document.add_paragraph('A plain paragraph having some ')
+    # document.add_picture(f,width=Inches(2.0),height=Inches(2.0))
+    # document.save("demo1.docx")
+    docConv.template(f)
+    pdf.covx_to_pdf()
+    return send_file("F:\\PycharmProjects\\finalproject\\out1.pdf", mimetype='application/*', as_attachment=True,attachment_filename="output.pdf")
+
+
+
+
+
+@app.route('/downloadpdf')
+def downloadpdf ():
+    print("hello")
+    return send_file("F:\\PycharmProjects\\finalproject\\out1.pdf", mimetype='application/*', as_attachment=True,
+                     attachment_filename="output.pdf")
 
 if __name__ == '__main__':
     app.run(port=4545, debug=True)

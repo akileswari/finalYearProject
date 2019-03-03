@@ -4,7 +4,7 @@ from docx import Document
 from docx.shared import Inches
 
 
-def template():
+def template(file):
     document = Document('F:\\PycharmProjects\\finalproject\\test.docx')
     print(document.paragraphs)
     width = 200
@@ -22,7 +22,7 @@ def template():
                     # print(arr)
                     #	print(int(arr[2].split('>')[0]))
                     cell.text = ""
-                    run = cell.paragraphs[0].add_run().add_picture(image_file, width=Inches(1), height=Inches(1))
+                    run = cell.paragraphs[0].add_run().add_picture(file, width=Inches(1), height=Inches(1))
                     print(arr[2])
                     print(arr[1])
                     inline_shape = run
@@ -33,7 +33,7 @@ def template():
             print(para.text)
             mycell = para.text.split('|')
             para.text = ""
-            para.add_run().add_picture(image_file, width=Inches(1), height=Inches(1))
+            para.add_run().add_picture(file, width=Inches(1), height=Inches(1))
             document.save('test1.docx')
 
 

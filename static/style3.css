@@ -19,7 +19,7 @@ color :#18e318;
 color :#F50D0E;
 }
 .box{
-width: 147px;height: 74px;font-size: 13px;
+width: 147px;font-size: 13px;
 }
 strong {
     font-weight: 800 !important;
@@ -27,4 +27,7 @@ strong {
 }
 h3{
 color:#d30bd6
+}
+#myChart_c{
+    overflow: inherit !important;
 }
