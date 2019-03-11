@@ -1,50 +1,45 @@
-
-saveData = (function () {
-
-    var a = document.createElement("a");
-    a.style = "display: none";
-    return function (blob, fileName) {
-        var url = blob;
-        a.href = url;
-        a.download = fileName;
-        a.click();
-        window.URL.revokeObjectURL(url);
-    };
-}());
-
-
 function exportdocx() {
-    console.log("hello1");
-    var selectedChart=document.getElementById("SelectedChart").value;
-    console.log(selectedChart);
-    var sImageData = zingchart.exec(selectedChart, 'getimagedata', {
-        format: 'png'
-    });
-    var block = sImageData.split(";");
-    var contentType = block[0].split(":")[1];// In this case "image/gif"
-    var realData = block[1].split(",")[1];// In this case "R0lGODlhPQBEAPeoAJosM...."
-    var blob = b64toBlob(realData, contentType);
-    console.log(blob);
-    var imagename=selectedChart+".png"
+    var selectedChart = document.getElementById("SelectedChart").value;
     var form = new FormData();
-    form.append('file', blob, imagename);
-    console.log("befor ajax call");
+    if (selectedChart == "All charts") {
+        var chartid = ["myChart", "myChart_a", "myChart_c", "myChart_i", "myChart_n"];
+        for (var i = 0; i < chartid.length; i++) {
+            var sImageData = zingchart.exec(chartid[i], 'getimagedata', {
+                format: 'png'
+            });
+            var block = sImageData.split(";");
+            var contentType = block[0].split(":")[1]; // In this case "image/gif"
+            var realData = block[1].split(",")[1]; // In this case "R0lGODlhPQBEAPeoAJosM...."
+            var blob = b64toBlob(realData, contentType);
+            var imagename = chartid[i] + ".png"
+            form.append('file'+i, blob, imagename);
+            }
+    }
+    else {
+        var sImageData = zingchart.exec(selectedChart, 'getimagedata', {
+            format: 'png'
+        });
+        var block = sImageData.split(";");
+        var contentType = block[0].split(":")[1]; // In this case "image/gif"
+        var realData = block[1].split(",")[1]; // In this case "R0lGODlhPQBEAPeoAJosM...."
+        var blob = b64toBlob(realData, contentType);
+        var imagename = selectedChart + ".png"
+        form.append('file', blob, imagename);
+    }
     $.ajax({
-      type: 'POST',
-      url: '/download',
-      data: form,
-      cache: false,
-      processData: false,
-      contentType: false
-    }).done(function(data) {
-      console.log(data);
-      window.open("/downloadpdf?fn="+selectedChart+".png","clearcache=yes");
+        type: 'POST',
+        url: '/download',
+        data: form,
+        cache: false,
+        processData: false,
+        contentType: false
+    }).done(function (data) {
+        window.open("/downloadpdf?fn=" + selectedChart + ".png", "clearcache=yes");
     });
-
-
-    form=undefined;
+    form = undefined;
 
 }
+
 function b64toBlob(b64Data, contentType, sliceSize) {
     contentType = contentType || '';
     sliceSize = sliceSize || 512;
@@ -68,8 +63,4 @@ function b64toBlob(b64Data, contentType, sliceSize) {
     var blob = new Blob(byteArrays, { type: contentType });
     return blob;
 }
-//function deletedocx()
-//{
-//var s=window.open("/delete");
-//}
 

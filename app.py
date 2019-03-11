@@ -10,7 +10,6 @@ app.config['CACHE_TYPE']="null"
 
 @app.route('/')
 def home():
-    print("home")
     return render_template('home.html')
 @app.route('/dashboard')
 def dashboard():
@@ -25,26 +24,32 @@ def dashboard():
                            d_n_lis=d_n_lis,inr=inr)
 
 @app.route('/download',methods=['POST'])
-def downloadFile ():
-    # print("hello2")
-    # print(request.method)
-    # print(request.files['file'])
-    f=request.files['file']
-    docConv.template(f)
-    fname=f.filename
-    pdfDownload = open("F:\\PycharmProjects\\finalproject\\static\\"+fname+".pdf", 'rb').read()
+def downloadFile():
+    if (os.path.isfile("F:\\PycharmProjects\\finalproject\\static\\output.pdf")):
+        os.remove("F:\\PycharmProjects\\finalproject\\static\\output.pdf")
+    f = request.files
+    imagefile =[]
+    for key in f:
+        print(key)
+        imagefile.append(request.files[key])
+
+    docConv.template(imagefile)
+    fname = "output"
+    pdfDownload = open("F:\\PycharmProjects\\finalproject\\static\\" + fname + ".pdf", 'rb').read()
     return Response(
-        pdfDownload,mimetype="application/pdf",headers={"Content-disposition":"attachment; filename=output.pdf"})
+        pdfDownload, mimetype="application/pdf", headers={"Content-disposition": "attachment; filename=output.pdf"})
+
 
 @app.route('/downloadpdf')
 def downloadpdf():
-    print(request.method)
-    fname=request.args['fn']
+    #fname=request.args['fn']
+    fname="output"
     return send_file("F:\\PycharmProjects\\finalproject\\static\\"+fname+".pdf", mimetype='application/*', as_attachment=True,attachment_filename="output.pdf")
 
 @app.route('/delete')
 def deletepdf ():
-    os.remove("F:\\PycharmProjects\\finalproject\\static\\output.pdf")
+    if (os.path.isfile("F:\\PycharmProjects\\finalproject\\static\\output.pdf")):
+        os.remove("F:\\PycharmProjects\\finalproject\\static\\output.pdf")
     return "deleted"
 
 if __name__ == '__main__':
