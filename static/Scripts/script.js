@@ -2,7 +2,7 @@ function exportdocx() {
     var selectedChart = document.getElementById("SelectedChart").value;
     var form = new FormData();
     if (selectedChart == "All charts") {
-        var chartid = ["myChart", "myChart_a", "myChart_c", "myChart_i", "myChart_n"];
+        var chartid = ["myChart", "myChart_a", "myChart_c", "myChart_s", "myChart_g"];
         for (var i = 0; i < chartid.length; i++) {
             var sImageData = zingchart.exec(chartid[i], 'getimagedata', {
                 format: 'png'

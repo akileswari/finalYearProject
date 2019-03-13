@@ -6,8 +6,8 @@
                 <option value="All charts">All charts</option>
                 <option value="myChart_a">Aluminium</option>
                 <option value="myChart_c">Copper</option>
-                <option value="myChart_i">Silver</option>
-                <option value="myChart_n">Gold</option>
+                <option value="myChart_s">Silver</option>
+                <option value="myChart_g">Gold</option>
             </select>
         <button id="export" onclick="exportdocx()" >export</button>
             </div>
@@ -422,7 +422,7 @@
                       </ul>
                   </div>
               </div>
-            <div id='myChart_i'></div>
+            <div id='myChart_s'></div>
             <script>
                     var myConfig =
                             {
@@ -490,7 +490,7 @@
                                 ]
                             };
                         zingchart.render({
-                            id : 'myChart_i',
+                            id : 'myChart_s',
                             data : myConfig,
                             height: 500,
                             width: '100%',
@@ -521,7 +521,7 @@
                       </ul>
                   </div>
               </div>
-              <div id='myChart_n'></div>
+              <div id='myChart_g'></div>
               <script>
                             var myConfig =
                             {
@@ -591,7 +591,7 @@
                                 ]
                             };
                             zingchart.render({
-                                id : 'myChart_n',
+                                id : 'myChart_g',
                                 data : myConfig,
                                 height: 400,
                                 width: "100%",
